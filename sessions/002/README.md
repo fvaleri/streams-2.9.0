@@ -5,7 +5,7 @@ Run the init script to setup your environment.
 ```sh
 $ source init.sh 
 namespace/test created
-Downloading Strimzi to /tmp/strimzi-0.45.0.yaml
+deployment.apps/strimzi-cluster-operator condition met
 Done
 ```
 
