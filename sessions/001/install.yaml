@@ -69,6 +69,10 @@ spec:
   entityOperator:
     topicOperator: {}
     userOperator: {}
+  cruiseControl:
+    autoRebalance:
+      - mode: add-brokers
+      - mode: remove-brokers
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic

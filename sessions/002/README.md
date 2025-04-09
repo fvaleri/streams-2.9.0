@@ -17,7 +17,11 @@ kafkanodepool.kafka.strimzi.io/controller created
 kafkanodepool.kafka.strimzi.io/broker created
 kafka.kafka.strimzi.io/my-cluster created
 kafkatopic.kafka.strimzi.io/my-topic created
+```
 
+Wait for the cluster to be up and running.
+
+```sh
 $ kubectl get po
 NAME                                          READY   STATUS    RESTARTS   AGE
 my-cluster-broker-3                           1/1     Running   0          3m54s
@@ -31,7 +35,7 @@ my-cluster-entity-operator-794b6fbcb6-gmlzf   2/2     Running   0          49s
 strimzi-cluster-operator-6596f469c9-wwhfg     1/1     Running   0          15m
 ```
 
-Check how partition replicas are assigned to broker volumes.
+Check how partitions are assigned to broker volumes.
 
 ```sh
 $ kubectl-kafka bin/kafka-log-dirs.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --describe \
@@ -70,7 +74,7 @@ $ kubectl-kafka bin/kafka-log-dirs.sh --bootstrap-server my-cluster-kafka-bootst
     "error": null, "logDir": "/var/lib/kafka/data-1/kafka-log3"}]
 ```
 
-Now, move all partitions from volumes 1 and 2 to volume 0 on all brokers by creating a KafkaRebalance with auto-approval.
+Move all partitions from volumes 1 and 2 to volume 0 on all brokers by creating a KafkaRebalance with auto-approval.
 
 ```sh
 $ echo -e 'apiVersion: kafka.strimzi.io/v1beta2
@@ -104,7 +108,7 @@ my-rebalance   my-cluster              Rebalancing
 my-rebalance   my-cluster              Ready
 ```
 
-Once the rebalance is complete, check again how partition replicas are assigned to broker volumes.
+When the rebalance is ready, check again how partitions are assigned to broker volumes.
 
 ```sh
 $ kubectl-kafka bin/kafka-log-dirs.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --describe \
@@ -138,7 +142,7 @@ $ kubectl-kafka bin/kafka-log-dirs.sh --bootstrap-server my-cluster-kafka-bootst
 {"partitions": [], "error": null, "logDir": "/var/lib/kafka/data-1/kafka-log3"}]
 ```
 
-Finally, remove volumes 1 and 2 from the broker NodePool and all related PVCs.
+Remove volumes 1 and 2 from the broker noed pool and all related PVCs.
 
 > [!WARNING]
 > There is currently no check on removed disks, so make sure that rebalance completed and there are no partitions left.
