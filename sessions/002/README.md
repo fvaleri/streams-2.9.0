@@ -35,7 +35,28 @@ my-cluster-entity-operator-794b6fbcb6-gmlzf   2/2     Running   0          49s
 strimzi-cluster-operator-6596f469c9-wwhfg     1/1     Running   0          15m
 ```
 
-Check how partitions are assigned to broker volumes.
+From the broker node pool we can see that there are 3 volumes for each broker.
+
+```sh
+$ kubectl get knp broker -o yaml | yq .spec.storage
+type: jbod
+volumes:
+  - deleteClaim: false
+    id: 0
+    kraftMetadata: shared
+    size: 100Gi
+    type: persistent-claim
+  - deleteClaim: false
+    id: 1
+    size: 100Gi
+    type: persistent-claim
+  - deleteClaim: false
+    id: 2
+    size: 100Gi
+    type: persistent-claim
+```
+
+Check how partitions are distributed between broker volumes.
 
 ```sh
 $ kubectl-kafka bin/kafka-log-dirs.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --describe \
@@ -108,7 +129,7 @@ my-rebalance   my-cluster              Rebalancing
 my-rebalance   my-cluster              Ready
 ```
 
-When the rebalance is ready, check again how partitions are assigned to broker volumes.
+When the rebalance is ready, check again how partitions distributed between broker volumes.
 
 ```sh
 $ kubectl-kafka bin/kafka-log-dirs.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --describe \
@@ -142,10 +163,10 @@ $ kubectl-kafka bin/kafka-log-dirs.sh --bootstrap-server my-cluster-kafka-bootst
 {"partitions": [], "error": null, "logDir": "/var/lib/kafka/data-1/kafka-log3"}]
 ```
 
-Remove volumes 1 and 2 from the broker noed pool and all related PVCs.
+Remove volumes 1 and 2 from the broker node pool and all related PVCs.
 
 > [!WARNING]
-> There is currently no check on removed disks, so make sure that rebalance completed and there are no partitions left.
+> There is currently no check on removed volumes, so make sure that the rebalance completed successfully.
 
 ```sh
 $ kubectl patch knp broker --type=json \
