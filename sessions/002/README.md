@@ -60,7 +60,7 @@ Check how partitions are distributed between broker volumes.
 
 ```sh
 $ kubectl-kafka bin/kafka-log-dirs.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --describe \
-  --broker-list 3,4,5 --topic-list my-topic | tail -n1 | yq .brokers[].logDirs
+  --broker-list 3,4,5 --topic-list my-topic | tail -n1 | yq ".brokers[].logDirs"
 # broker 4, disks: 2,0,1
 [{"partitions": 
     [{"partition": "my-topic-0", "size": 0, "offsetLag": 0, "isFuture": false}], 
@@ -163,7 +163,7 @@ $ kubectl-kafka bin/kafka-log-dirs.sh --bootstrap-server my-cluster-kafka-bootst
 {"partitions": [], "error": null, "logDir": "/var/lib/kafka/data-1/kafka-log3"}]
 ```
 
-Remove volumes 1 and 2 from the broker node pool and all related PVCs.
+Remove volumes 1 and 2 from the broker node pool and related PVCs.
 
 > [!WARNING]
 > There is currently no check on removed volumes, so make sure that the rebalance completed successfully.

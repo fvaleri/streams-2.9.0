@@ -66,6 +66,11 @@ spec:
       transaction.state.log.min.isr: 2
       default.replication.factor: 3
       min.insync.replicas: 2
+      # tunings to make cluster model generation faster
+      cruise.control.metrics.reporter.metrics.reporting.interval.ms: 5000
+      cruise.control.metrics.reporter.metadata.max.age.ms: 4000
+      cruise.control.metrics.topic.replication.factor: 1
+      cruise.control.metrics.topic.min.insync.replicas: 1
   entityOperator:
     topicOperator: {}
     userOperator: {}
@@ -73,6 +78,23 @@ spec:
     autoRebalance:
       - mode: add-brokers
       - mode: remove-brokers
+    brokerCapacity:
+      inboundNetwork: 500MB/s
+      outboundNetwork: 500MB/s
+    config:
+      # increase active user tasks
+      max.active.user.tasks: 10
+      # tunings to make cluster model generation faster
+      metric.sampling.interval.ms: 5000
+      cruise.control.metrics.reporter.metrics.reporting.interval.ms: 5000
+      metadata.max.age.ms: 4000
+      sample.store.topic.replication.factor: 1
+      partition.sample.store.topic.partition.count: 1
+      broker.sample.store.topic.partition.count: 1
+      skip.sample.store.topic.rack.awareness.check: true
+      partition.metrics.window.ms: 10000
+      broker.metrics.window.ms: 10000
+      monitor.state.update.interval.ms: 10000
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
