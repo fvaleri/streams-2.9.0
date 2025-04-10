@@ -38,13 +38,12 @@ strimzi-cluster-operator-6596f469c9-2qb45    1/1     Running   0          2m11s
 From the Kafka resource we can see that the `autoReabalance` feature is enabled.
 
 > [!IMPORTANT]
-> If a template is not specified, default Cruise Control rebalancing configuration is used.
+> If a template is not configured, the default Cruise Control configuration is used.
 
 ```sh
-$ kubectl get k my-cluster -o yaml | yq .spec.cruiseControl
-autoRebalance:
-  - mode: add-brokers
-  - mode: remove-brokers
+$ kubectl get k my-cluster -o yaml | yq .spec.cruiseControl.autoRebalance
+- mode: add-brokers
+- mode: remove-brokers
 ```
 
 Check how partitions are distributed between brokers.
@@ -58,7 +57,7 @@ Topic: my-topic	TopicId: tPlZGjijRB-peP7vSOv3vg	PartitionCount: 3	ReplicationFac
 ```
 
 Scale up the Kafka cluster by adding two new brokers.
-When the new brokers are ready, Cruise Control is restarted to take into account the new cluster capacity.
+Cruise Control is restarted to take into account the new cluster capacity.
 
 ```sh
 $ kubectl patch knp broker --type merge -p '
@@ -67,7 +66,7 @@ $ kubectl patch knp broker --type merge -p '
 kafkanodepool.kafka.strimzi.io/broker patched
 ```
 
-Watch the auto-generated KafkaRebalance execution from command line.
+Watch the auto-generated KafkaRebalance execution.
 
 ```sh
 $ kubectl get kr -w
