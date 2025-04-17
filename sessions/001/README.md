@@ -49,7 +49,7 @@ $ kubectl get k my-cluster -o yaml | yq .spec.cruiseControl.autoRebalance
 Check how partitions are distributed between brokers.
 
 ```sh
-$ kubectl-kafka bin/kafka-topics.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --describe --topic my-topic
+$ kubectl_kafka bin/kafka-topics.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --describe --topic my-topic
 Topic: my-topic	TopicId: tPlZGjijRB-peP7vSOv3vg	PartitionCount: 3	ReplicationFactor: 3	Configs: min.insync.replicas=2,segment.bytes=1073741824,retention.ms=7200000
 	Topic: my-topic	Partition: 0	Leader: 5	Replicas: 5,3,4	Isr: 5,3,4	Elr: 	LastKnownElr: 
 	Topic: my-topic	Partition: 1	Leader: 3	Replicas: 3,4,5	Isr: 3,4,5	Elr: 	LastKnownElr: 
@@ -80,7 +80,7 @@ my-cluster-auto-rebalancing-add-brokers   my-cluster              Ready
 Check again how partitions are distributed between brokers.
 
 ```sh
-$ kubectl-kafka bin/kafka-topics.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --describe --topic my-topic
+$ kubectl_kafka bin/kafka-topics.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --describe --topic my-topic
 Topic: my-topic	TopicId: tPlZGjijRB-peP7vSOv3vg	PartitionCount: 3	ReplicationFactor: 3	Configs: min.insync.replicas=2,segment.bytes=1073741824,retention.ms=7200000
 	Topic: my-topic	Partition: 0	Leader: 5	Replicas: 5,6,7	Isr: 5,6,7	Elr: 	LastKnownElr: 
 	Topic: my-topic	Partition: 1	Leader: 7	Replicas: 7,6,5	Isr: 5,6,7	Elr: 	LastKnownElr: 

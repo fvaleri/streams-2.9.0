@@ -59,7 +59,7 @@ volumes:
 Check how partitions are distributed between broker volumes.
 
 ```sh
-$ kubectl-kafka bin/kafka-log-dirs.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --describe \
+$ kubectl_kafka bin/kafka-log-dirs.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --describe \
   --broker-list 3,4,5 --topic-list my-topic | tail -n1 | yq ".brokers[].logDirs"
 # broker 4, disks: 2,0,1
 [{"partitions": 
@@ -132,7 +132,7 @@ my-rebalance   my-cluster              Ready
 When the rebalance is ready, check again how partitions distributed between broker volumes.
 
 ```sh
-$ kubectl-kafka bin/kafka-log-dirs.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --describe \
+$ kubectl_kafka bin/kafka-log-dirs.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --describe \
   --broker-list 3,4,5 --topic-list my-topic | tail -n1 | yq .brokers[].logDirs
 # broker 4, disks: 2,0,1
 [{"partitions": [], 

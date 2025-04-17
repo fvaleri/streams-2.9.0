@@ -11,7 +11,7 @@ for x in kubectl yq; do
   fi
 done
 
-kubectl-kafka() {
+kubectl_kafka() {
   kubectl get po kafka-tools &>/dev/null || kubectl run kafka-tools -q --restart="Never" \
     --image="apache/kafka:latest" -- sh -c "trap : TERM INT; sleep infinity & wait"
   kubectl wait --for=condition=ready po kafka-tools &>/dev/null
